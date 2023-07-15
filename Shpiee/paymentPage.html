@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payment</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    <link
+    rel="stylesheet"
+    type="text/css"
+    href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css"
+  />
+  <script
+    type="text/javascript"
+    src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"
+  ></script>
+    <style>
+        table,
+        tr,
+        td {
+            border: 2px solid #2a2a2a;
+            border-collapse: collapse;
+        }
+
+        .scroller::-webkit-scrollbar {
+            display: none;
+        }
+    </style>
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top bg-body-tertiary">
+        <div class="container-fluid ">
+            <a class="navbar-brand" href="index.html"><img src="/RadixLogo.png" height="40px" alt=""></a>
+            <form class="d-flex col-8 col-lg-3 col-md-2 flex-lg-row-reverse">
+
+                <div class="d-flex">
+                    <a href="cart.html"><img src="https://www.svgrepo.com/show/508283/cart.svg" class="ps-2"
+                            height="40px" alt="" id="cart"></a>
+                    <span class="badge badge-dark bg-black rounded-circle mb-4" id="badge"></span>
+                </div>
+                <div class="dropdown ">
+                    <button class="btn btn-light rounded-circle border border-dark border-2 p-2" type="button"
+                        data-bs-toggle="dropdown" aria-expanded="false">
+                        <img src="https://www.svgrepo.com/show/509283/user.svg" class="pb-1" height="20px" width="20px"
+                            alt="">
+                    </button>
+                    <ul class="dropdown-menu dropdown-menu-start" id="menu">
+                    </ul>
+                </div>
+            </form>
+        </div>
+    </nav>
+
+    <div class="container-fluid">
+        <div class="row gap-2 justify-content-center mt-5">
+            <div class='col-4 mt-5 border border-3 border-primary p-5 pt-2 bg-light rounded overflow-y-auto scroller'
+                style="height: 650px; width: 800px;  overflow-x: scroll;">
+                <h3>Invoice</h3>
+                <table clas="col-12 align-item-center " id="tablediv">
+                    <tr>
+                        <td><strong>Amazon.in</strong></td>
+                        <td class="text-end" colspan="3" rowspan="2" id="date">12-January-2023</td>
+                    </tr>
+                    <tr>
+                        <td>2135 Mumbai Bhiwandi</td>
+                    </tr>
+                    <tr>
+                        <td>pincode: 300007</td>
+                        <td class="text-end" colspan="3">Reciptent: #289484</td>
+                    </tr>
+                    <tr>
+                        <td colspan="4" class="text-center py-4 fs-3">Receipt</td>
+                    </tr>
+                    <tr>
+                        <td class="py-2 px-4 text-center"><strong>Product</strong></td>
+                        <td class="py-2 px-4 text-center"><strong>Quantity</strong></td>
+                        <td class="py-2 px-4 text-center"><strong>Price</strong></td>
+                        <td class="py-2 px-4 text-center"><strong>Total</strong></td>
+                    </tr>
+                </table>
+            </div>
+            <div class="col-4 mt-5 border border-3 border-primary p-5 pt-2 bg-light rounded ">
+                <div class="row justify-content-center fs-3 text-primary mb-4">
+                    Choose payment option
+                </div>
+
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="payment" id="creditcard" value="creditcard"
+                        checked>
+                    <label class="form-check-label" for="creditcard">
+                        Credit Card
+                    </label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="payment" id="debitcard" value="debitcard">
+                    <label class="form-check-label" for="debitcard">
+                        Debit Card
+                    </label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="payment" id="upi" value="upi">
+                    <label class="form-check-label" for="upi">
+                        UPI
+                    </label>
+                </div>
+
+                <div class="d-none" id="upidiv">
+                    <!-- Upi input -->
+                    <div class="form-outline mb-4 mt-5">
+                        <label for="upiinput">UPI Id : </label>
+                        <input type="text" id="upiinput" name='upiinput' class="form-control mt-2"
+                            placeholder="UPI ID" />
+                        <small id="errUpi" class="text-danger"></small>
+                    </div>
+                </div>
+
+                <div id="carddiv">
+
+                    <!-- name input -->
+                    <div class="form-outline mb-4 mt-5">
+                        <label for="name">Name on card : </label>
+                        <input type="text" id="name" name='name' class="form-control mt-2" placeholder="Name on card" />
+                        <small id="errName" class="text-muted">Full name as displayed on card </small>
+                    </div>
+
+                    <!-- card number -->
+                    <div class="form-outline mb-4">
+                        <label for="name">Card Number : </label>
+                        <input type="number" id="number" name='name' class="form-control mt-2"
+                            placeholder="Enter card number" />
+                        <small id="errNumber" class="text-muted"></small>
+                    </div>
+
+                    <div class="row">
+
+                        <!-- email input -->
+                        <div class="col-6 form-outline mb-4">
+                            <label for="name">Expiration : </label>
+                            <input type="date" id="expdate" name='expdate' class="form-control"
+                                placeholder="Expire date " />
+                            <small id="errExpiration" class="text-danger"></small>
+                        </div>
+
+                        <!-- CVV -->
+                        <div class="col-6 form-outline mb-4">
+                            <label for="cvv">CVV : </label>
+                            <input type="password" id="cvv" name='cvv' class="form-control" maxlength="3"
+                                placeholder="cvv number " />
+                            <small id="errCvv" class="text-danger"></small>
+                        </div>
+
+                    </div>
+                </div>
+
+                <!-- Submit button -->
+                <button type="button" class="btn btn-primary w-100" tabindex="4" data-bs-toggle="modal"
+                    data-bs-target="#addressModal">Add Address</button>
+                <button id="checkout" class="btn btn-primary w-100 mt-3" tabindex="4">Continue to checkout</button>
+
+                <div class="h-25 text-center" id="message">
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- ModaladdressModal -->
+    <div class="modal fade" id="addressModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+        aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="staticBackdropLabel">Add address</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body p-2">
+                    <form action="">
+                    <!-- Address input -->
+                    <div class="form-outline mb-2 mt-2">
+                        <label for="ShippingAddress">Shipping Address : </label>
+                        <textarea type="text" id="ShippingAddress" name='ShippingAddress' class="form-control mt-2" placeholder="ShippingAddress" ></textarea>
+                        <small id="errShippingAddress" class="text-muted">Order will be deliverd to this address </small>
+                    </div>
+
+                    <!-- Address input -->
+                    <div class="form-outline mb-2 mt-2">
+                        <label for="contactNo">Contact No : </label>
+                        <input type="text" id="contactNo" name='contactNo' maxlength="10" class="form-control mt-2" placeholder="contact Number" />
+                        <small id="errcontactNo" class="text-muted"></small>
+                    </div>
+                    </div>
+                    <label class='pb-2 ps-2' for="addresstype"><strong>Address Type:  </strong></label>
+                    <div class="row gx-0 ps-3">
+                        <div class="form-check d-inline">
+                            <input class="form-check-input" type="radio" name="typeaddress" id="typeaddress1">
+                            <label class="form-check-label" for="typeaddress1">
+                                Home (9:00 am - 11:00pm)
+                            </label>
+                        </div>
+                        <div class="form-check d-inline">
+                            <input class="form-check-input" type="radio" name="typeaddress" id="typeaddress2" checked >
+                            <label class="form-check-label" for="typeaddress2">
+                                Office (9:00 am - 7:00pm)
+                            </label>
+                        </div>
+                    </div>
+                    <div class="modal-footer mt-2">
+                        <button type="button"  class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="button" id="add_Address" class="btn btn-primary">Submit</button>
+                    </div>
+                </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</body>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz"
+    crossorigin="anonymous"></script>
+<script type="module"  src="src/paymentPage.ts"></script>
+</body>
+
+</html>
